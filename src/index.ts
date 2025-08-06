@@ -1,11 +1,17 @@
 import express from 'express';
 import ordersRouter from './routes/orders';
+import { producer } from './config/kafka';
+
 
 const app = express();
 app.use(express.json());
 app.use('/orders', ordersRouter);
 
-const PORT = 3000;
-app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
-});
+async function start() {
+  await producer.connect();
+  app.listen(3000, () => {
+    console.log('Servidor escuchando en puerto 3000');
+  });
+}
+
+start();

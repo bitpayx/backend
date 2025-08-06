@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { redis } from '../config/redis';
 import { prisma } from '../config/prisma';
+import { producer } from '../config/kafka';
 
 export const createOrder = async (req: Request, res: Response) => {
   const { amount, userId, idempotencyKey } = req.body;
@@ -24,6 +25,15 @@ export const createOrder = async (req: Request, res: Response) => {
         amount: parseFloat(amount),
         idempotencyKey
       },
+    });
+    await producer.send({
+      topic: 'order.created',
+      messages: [
+        {
+          key: String(order.id),
+          value: JSON.stringify(order),
+        },
+      ],
     });
     await redis.del(key);
     return res.status(201).json(order);
