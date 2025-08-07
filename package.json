@@ -24,6 +24,7 @@
     "@types/ioredis": "^4.28.10",
     "@types/node": "^24.2.0",
     "ts-node-dev": "^2.0.0",
-    "typescript": "^5.9.2"
+    "typescript": "^5.9.2",
+    "ethers": "^6.15.0"
   }
 }
