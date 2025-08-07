@@ -17,3 +17,12 @@ model Order {
 
   @@map("orders")
 }
+
+model Wallet {
+  id        Int      @id @default(autoincrement())
+  address   String   @unique
+  userId    String   @unique @map("user_id") @db.VarChar(255)
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("wallets")
+}
